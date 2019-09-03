@@ -58,5 +58,20 @@
 
 class Solution:
     def isBalanced(self, root: TreeNode) -> bool:
+        pass
+    
+    # 自顶向下遍历，O(n2)
+    def isBalanced_Top(self, root: TreeNode) -> bool:
+        def deep(node):
+            if node is None: return 0
+            else:
+                return 1+max(deep(node.left), deep(node.right))
+        
+        if root is None: return True
+        left = deep(root.left)
+        right = deep(root.right)
+
+        return abs(left - right) <= 1 and \
+                self.isBalanced(root.left) and self.isBalanced(root.right)
         
 

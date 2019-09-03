@@ -40,28 +40,34 @@
 
 class Solution:
     def maxDepth(self, root: TreeNode) -> int:
+
+        # 方法1：递归
+        def deep(tree):
+            if tree is None:    return 0
+            else:
+                return 1+max(deep(tree.left), deep(tree.right))
+        
+        # 方法2：迭代, 深度优先
         if root is None: return 0
-
-        maxDeep = 1
-        deep = 1
-        stack = [root]
-        while stack != []:
-            node = stack.pop()
-            # 左
-            while node.left:
-                stack.append(node)
+        
+        stack = []
+        node = root
+        deep = 0
+        maxDeep = 0
+        while node or stack:
+            # 不断遍历左节点
+            while node:
+                deep += 1
+                stack.append((deep, node))
                 node = node.left
-                deep += 1
             
-            maxDeep = max(deep,maxDeep)
-            while node.right is None and stack != []:
-                node = stack.pop()
-                deep -= 1
+            # 当前节点的左节点已遍历完
+            deep, node = stack.pop()
+            maxDeep = max(maxDeep, deep)
 
-            if node.right:
-                stack.append(node.right)
-                deep += 1
-            
+            # 右节点
+            node = node.right
+             
         return maxDeep
 
             
